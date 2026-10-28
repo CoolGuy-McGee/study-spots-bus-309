@@ -13,6 +13,10 @@
     <style>
       .detail-photo{height:185px;margin:-1px -1px 21px;border-radius:4px;background:linear-gradient(135deg,#c8e3df,#f3e5cb 50%,#b9d1c5);position:relative;overflow:hidden}.detail-photo:after{content:'';position:absolute;inset:30px 35px 0;background:linear-gradient(90deg,transparent 0 12%,#5f9685 12% 14%,transparent 14% 34%,#d19a61 34% 36%,transparent 36% 58%,#5f9685 58% 60%,transparent 60%);opacity:.5}.save-button{width:100%;height:44px;margin-top:24px;border:0;border-radius:6px;background:#27735f;color:#fff;font-size:16px;font-weight:600}.save-button span{margin-left:8px}.amenity-grid{grid-template-columns:repeat(4,1fr)}.amenity-grid div{padding:9px 5px}.amenity-grid span{font-size:21px!important;line-height:1!important;margin-bottom:7px!important}.amenity-grid span:before{content:none!important}.amenity-grid small{display:block;color:#74767a;font-size:10px;margin-bottom:5px}.amenity-grid strong{font-size:11px!important}.detail-location:before{color:#27735f!important}.leaflet-tile{filter:none;opacity:1}.scenery:after,.detail-content:after{display:none!important}
     </style>
+    <style>
+      @media (max-width: 800px) { .detail-panel { display: block; position: fixed; inset: 0; width: auto; max-height: none; border: 0; border-radius: 0; opacity: 0; visibility: hidden; pointer-events: none; transform: translateY(100%); transition: opacity 240ms ease, transform 320ms cubic-bezier(.22,.8,.24,1), visibility 320ms; } .detail-panel.is-open { opacity: 1; visibility: visible; pointer-events: auto; transform: translateY(0); } }
+      @media (prefers-reduced-motion: reduce) { .detail-panel { transition: none; } }
+    </style>
   </head>
   <body>
     <div class="app-shell">

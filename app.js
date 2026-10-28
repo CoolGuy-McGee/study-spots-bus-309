@@ -53,10 +53,12 @@ function selectSpot(id) {
   const spot = state.spots.find((item) => item.id === id);
   if (!spot) return;
   state.selected = spot; renderList(); renderMarkers(); renderDetail(spot);
+  byId('detail-panel').classList.add('is-open');
   map.flyTo([spot.lat, spot.lng], 17, { duration: 0.6 });
 }
 function closeDetail() {
   state.selected = null;
+  byId('detail-panel').classList.remove('is-open');
   byId('detail-panel').innerHTML = '<button class="close-detail" id="close-detail" type="button" aria-label="Close spot details">×</button><div class="detail-empty"><div class="empty-icon">↗</div><p class="eyebrow">Spot details</p><h2>Pick a pin<br /><em>to peek inside.</em></h2><p>Choose a spot from the list or map to see its ratings, amenities, and notes.</p></div>';
   byId('close-detail').addEventListener('click', closeDetail); renderList(); renderMarkers();
 }
@@ -67,7 +69,7 @@ async function init() {
   if (!response.ok) throw new Error('Could not load data.json');
   state.spots = await response.json();
   byId('status-copy').textContent = `${state.spots.length} student-submitted spots`;
-  selectSpot(state.spots.find((spot) => spot.building.includes('Library'))?.id || state.spots[0].id);
+  if (!window.matchMedia('(max-width: 800px)').matches) selectSpot(state.spots.find((spot) => spot.building.includes('Library'))?.id || state.spots[0].id);
   updateView();
 }
 
