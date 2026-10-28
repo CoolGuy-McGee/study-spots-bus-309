@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f6f7f2" />
+    <title>Study Spots | BYU-Idaho</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="./styles.css" />
+    <style>
+      .detail-photo{height:185px;margin:-1px -1px 21px;border-radius:4px;background:linear-gradient(135deg,#c8e3df,#f3e5cb 50%,#b9d1c5);position:relative;overflow:hidden}.detail-photo:after{content:'';position:absolute;inset:30px 35px 0;background:linear-gradient(90deg,transparent 0 12%,#5f9685 12% 14%,transparent 14% 34%,#d19a61 34% 36%,transparent 36% 58%,#5f9685 58% 60%,transparent 60%);opacity:.5}.save-button{width:100%;height:44px;margin-top:24px;border:0;border-radius:6px;background:#27735f;color:#fff;font-size:16px;font-weight:600}.save-button span{margin-left:8px}.amenity-grid{grid-template-columns:repeat(4,1fr)}.amenity-grid div{padding:9px 5px}.amenity-grid span{font-size:21px!important;line-height:1!important;margin-bottom:7px!important}.amenity-grid span:before{content:none!important}.amenity-grid small{display:block;color:#74767a;font-size:10px;margin-bottom:5px}.amenity-grid strong{font-size:11px!important}.detail-location:before{color:#27735f!important}.leaflet-tile{filter:none;opacity:1}.scenery:after,.detail-content:after{display:none!important}
+    </style>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="./" aria-label="Campus Study Spot Finder home"><span class="brand-mark">⌖</span><strong>Campus Study Spot Finder</strong></a>
+        <nav class="topnav" aria-label="Primary navigation"><a class="active" href="#map">Map</a><a href="#saved">Saved Spots</a><button class="menu-button" type="button" aria-label="Open menu">☰</button></nav>
+      </header>
+
+      <main class="workspace">
+        <div class="toolbar">
+          <label class="search-box" for="search-input"><span class="search-icon">⌕</span><input id="search-input" type="search" placeholder="Search for a study spot..." autocomplete="off" /></label>
+          <div class="filter-row" role="group" aria-label="Spot filters">
+            <button class="filter-chip active" data-filter="all" type="button">All</button>
+            <button class="filter-chip" data-filter="Library" type="button">Library</button>
+            <button class="filter-chip" data-filter="Inside" type="button">Indoor</button>
+            <button class="filter-chip" data-filter="Outside" type="button">Outdoor</button>
+            <button class="filter-chip" data-filter="Quiet" type="button">Quiet</button>
+            <button class="filter-chip" data-filter="Group" type="button">Group</button>
+          </div>
+        </div>
+        <section class="map-stage" aria-label="Study spots map">
+          <div id="map"></div>
+          <button class="locate-button" id="campus-button" type="button" aria-label="Recenter on campus">◎</button>
+          <div class="map-status"><span id="status-copy">43 spots</span><span>·</span><span>Demo coordinates</span></div>
+          <aside class="detail-panel" id="detail-panel" aria-live="polite"><button class="close-detail" id="close-detail" type="button" aria-label="Close spot details">×</button><div class="detail-empty"><div class="empty-icon">⌖</div><h2>Select a spot</h2><p>Choose a pin to view study spot details.</p></div></aside>
+        </section>
+      </main>
+    </div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
