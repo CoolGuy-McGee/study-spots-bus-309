@@ -17,6 +17,15 @@
       @media (max-width: 800px) { .detail-panel { display: block; position: fixed; inset: 0; width: auto; max-height: none; border: 0; border-radius: 0; opacity: 0; visibility: hidden; pointer-events: none; transform: translateY(100%); transition: opacity 240ms ease, transform 320ms cubic-bezier(.22,.8,.24,1), visibility 320ms; } .detail-panel.is-open { opacity: 1; visibility: visible; pointer-events: auto; transform: translateY(0); } }
       @media (prefers-reduced-motion: reduce) { .detail-panel { transition: none; } }
     </style>
+    <style>
+      html, body { min-height: 100%; overflow-x: hidden; }
+      .app-shell { min-height: 100svh; }
+      @media (max-width: 800px) {
+        .workspace { min-height: calc(100svh - 64px); height: calc(100dvh - 64px); overflow: hidden; }
+        .map-stage { min-height: 0; height: auto; flex: 1 1 auto; }
+        .detail-panel.is-open { overflow-y: auto; -webkit-overflow-scrolling: touch; }
+      }
+    </style>
   </head>
   <body>
     <div class="app-shell">
