@@ -153,7 +153,6 @@ async function init() {
   state.spots = await response.json();
   renderFilterControls();
   byId('status-copy').textContent = `${state.spots.length} student-submitted spots`;
-  if (!window.matchMedia('(max-width: 800px)').matches) selectSpot(state.spots.find((spot) => spot.building.includes('Library'))?.id || state.spots[0].id);
   updateView();
 }
 
