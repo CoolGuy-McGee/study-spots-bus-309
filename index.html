@@ -21,14 +21,7 @@
       <main class="workspace">
         <div class="toolbar">
           <label class="search-box" for="search-input"><span class="search-icon">⌕</span><input id="search-input" type="search" placeholder="Search for a study spot..." autocomplete="off" /></label>
-          <div class="filter-row" role="group" aria-label="Spot filters">
-            <button class="filter-chip active" data-filter="all" type="button">All</button>
-            <button class="filter-chip" data-filter="Library" type="button">Library</button>
-            <button class="filter-chip" data-filter="Inside" type="button">Indoor</button>
-            <button class="filter-chip" data-filter="Outside" type="button">Outdoor</button>
-            <button class="filter-chip" data-filter="Quiet" type="button">Quiet</button>
-            <button class="filter-chip" data-filter="Group" type="button">Group</button>
-          </div>
+          <button class="filters-button" id="filters-button" type="button" aria-expanded="false" aria-controls="filter-panel"><span aria-hidden="true">☷</span> Filters</button>
         </div>
         <section class="map-stage" aria-label="Study spots map">
           <div id="map"></div>
@@ -38,6 +31,12 @@
         </section>
       </main>
     </div>
+    <div class="filter-backdrop" id="filter-backdrop"></div>
+    <aside class="filter-panel" id="filter-panel" aria-label="Study spot filters" aria-hidden="true">
+      <div class="filter-panel-header"><div><p class="filter-eyebrow">Refine your study spot</p><h2>Filters</h2></div><button class="filter-close" id="filter-close" type="button" aria-label="Close filters">×</button></div>
+      <div class="filter-panel-body" id="filter-controls"></div>
+      <div class="filter-panel-footer"><button class="clear-filters" id="clear-filters" type="button">Clear all</button><button class="show-spots" id="show-spots" type="button">Show <span id="filter-count">43</span> spots</button></div>
+    </aside>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="./app.js"></script>
   </body>
