@@ -22,3 +22,4 @@ html, body { min-height: 100%; overflow-x: hidden; }.leaflet-bottom.leaflet-left
 @media(min-width:801px){.detail-panel{right:10px}}
 .detail-location:before{content:none!important;margin-right:0!important}
 .detail-content{padding-top:20px}
+@media(max-width:800px){.map-stage.has-detail .leaflet-control-attribution,.map-stage.has-filters .leaflet-control-attribution{display:none}}
