@@ -116,7 +116,7 @@ function renderMarkers() {
 }
 
 function renderDetail(spot) {
-  const amenities = [['🔇', 'Noise', spot.noise], ['👥', 'Crowd', spot.crowd], ['🔒', 'Privacy', spot.privacy], ['📅', 'Availability', spot.availability], ['🍽️', 'Food', spot.food], ['🪑', 'Study Type', spot.space], ['🖥️', 'Desk', spot.desk], ['⚡', 'Power', spot.power], ['📶', 'Wi-Fi', spot.wifi], ['♿', 'Accessible', spot.accessible ? 'Yes' : 'No']];
+  const amenities = [['🔊', 'Noise', spot.noise], ['👥', 'Crowd', spot.crowd], ['🔒', 'Privacy', spot.privacy], ['📅', 'Availability', spot.availability], ['🍽️', 'Food', spot.food], ['🪑', 'Study Type', spot.space], ['🖥️', 'Desk', spot.desk], ['🔌', 'Power', spot.power], ['🛜', 'Wi-Fi', spot.wifi], ['♿', 'Accessible', spot.accessible ? 'Yes' : 'No']];
   byId('detail-panel').innerHTML = `<button class="close-detail" id="close-detail" type="button" aria-label="Close spot details">×</button>
     <div class="detail-content"><div class="detail-photo" role="img" aria-label="Study space preview"></div>
     <h2>${spot.building} — ${spot.room}</h2><p class="detail-location">${spot.building} · ${spot.setting}</p>
@@ -136,7 +136,15 @@ function selectSpot(id) {
   state.selected = spot; renderList(); renderMarkers(); renderDetail(spot);
   byId('detail-panel').classList.add('is-open');
   document.querySelector('.map-stage').classList.add('has-detail');
-  map.flyTo([spot.lat, spot.lng], 17, { duration: 0.6 });
+  if (!window.matchMedia('(max-width: 800px)').matches) {
+    const mapRect = byId('map').getBoundingClientRect();
+    const detailRect = byId('detail-panel').getBoundingClientRect();
+    const cardAndInset = detailRect.width + Math.max(0, mapRect.right - detailRect.right);
+    const zoom = 17;
+    const projected = map.project([spot.lat, spot.lng], zoom);
+    const adjustedCenter = map.unproject(L.point(projected.x + cardAndInset / 2, projected.y), zoom);
+    map.flyTo(adjustedCenter, zoom, { duration: 0.6 });
+  }
 }
 function closeDetail() {
   state.selected = null;

@@ -20,3 +20,5 @@ html, body { min-height: 100%; overflow-x: hidden; }.leaflet-bottom.leaflet-left
 .workspace{padding:0;min-height:0}.map-stage{border-radius:0;box-shadow:none}@media(max-width:800px){.workspace{padding:0;min-height:0;height:auto}}
 .topbar{height:76px;min-height:76px;padding:0 36px;flex-wrap:nowrap;gap:28px}.topbar .toolbar{order:2;flex:1;width:auto;margin:0;min-width:0}.topnav{order:3;height:100%;margin-left:auto;flex:0 0 auto}@media(max-width:800px){.topbar{height:auto;min-height:0;padding:0 18px 11px;flex-wrap:wrap;gap:0 15px}.topnav{order:2;height:64px;margin-left:auto}.topbar .toolbar{order:3;flex:0 0 100%;width:100%;margin:0}}
 @media(min-width:801px){.detail-panel{right:10px}}
+.detail-location:before{content:none!important;margin-right:0!important}
+.detail-content{padding-top:20px}
