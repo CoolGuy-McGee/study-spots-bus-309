@@ -19,12 +19,40 @@
     </style>
     <style>
       html, body { min-height: 100%; overflow-x: hidden; }
+      .leaflet-bottom.leaflet-left { left: 10px; bottom: 10px; }
+      .leaflet-bottom.leaflet-left { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+      .leaflet-control-zoom { position: static; width: 42px; margin: 0 !important; }
+      .leaflet-control-zoom a { width: 42px; }
+      .leaflet-bottom.leaflet-left .locate-button { position: static; margin: 0; }
+      .locate-button { left: 10px; }
       .app-shell { min-height: 100svh; }
       @media (max-width: 800px) {
         .workspace { min-height: calc(100svh - 64px); height: calc(100dvh - 64px); overflow: hidden; }
         .map-stage { min-height: 0; height: auto; flex: 1 1 auto; }
         .detail-panel.is-open { overflow-y: auto; -webkit-overflow-scrolling: touch; }
+        .map-stage.has-detail .leaflet-bottom.leaflet-left { display: none; }
       }
+    </style>
+    <style>
+      .detail-content { padding: 10px 16px 18px; }
+      .detail-photo { height: 185px; margin: 0 0 14px; border-radius: 12px; }
+      .detail-kicker { margin: 0; }
+      .detail-content h2 { margin: 4px 0 4px; font-size: 25px; line-height: 1.15; }
+      .detail-location { margin: 0 0 10px; }
+      .big-rating { position: absolute; top: 256px; right: 20px; margin: 0; }
+      .big-rating small { display: none; }
+      .amenity-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px 12px; margin-top: 12px; }
+      .amenity-grid div { min-height: 50px; display: grid; grid-template-columns: 35px 1fr; grid-template-rows: 1fr 1fr; align-items: center; padding: 7px 10px; border: 1px solid #e1e6ee; border-radius: 12px; background: #f3f7fd; }
+      .amenity-grid span { grid-row: 1 / span 2; margin: 0 !important; color: #155aa8; }
+      .amenity-grid small { margin: 0; font-size: 12px; }
+      .amenity-grid strong { font-size: 15px !important; }
+      .rating-list { display: none; }
+      .scenery { margin-top: 18px; padding-top: 12px; border-top: 1px solid #d5d6d8; }
+      .scenery h3 { margin: 0 0 6px; color: #122d5c; font-size: 18px; }
+      .scenery p { margin: 0; line-height: 1.4; }
+      .save-button { margin-top: 18px; border-radius: 12px; background: #1264b5; }
+      @media (min-width: 801px) { .detail-panel { bottom: 20px; } }
+      @media (max-width: 800px) { .big-rating { top: 256px; } }
     </style>
   </head>
   <body>
