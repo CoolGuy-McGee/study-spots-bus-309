@@ -36,7 +36,7 @@ function renderMarkers() {
 function renderDetail(spot) {
   const amenities = [['🔇', 'Noise', spot.noise], ['👥', 'Crowd', spot.crowd], ['🔒', 'Privacy', spot.privacy], ['📅', 'Availability', spot.availability], ['🍽️', 'Food', spot.food], ['🪑', 'Study Type', spot.space], ['🖥️', 'Desk', spot.desk], ['⚡', 'Power', spot.power], ['📶', 'Wi-Fi', spot.wifi], ['♿', 'Accessible', spot.accessible ? 'Yes' : 'No']];
   byId('detail-panel').innerHTML = `<button class="close-detail" id="close-detail" type="button" aria-label="Close spot details">×</button>
-    <div class="detail-content"><div class="detail-kicker"><span></span><span>Spot ${String(spot.id).padStart(2, '0')}</span></div><div class="detail-photo" role="img" aria-label="Study space preview"></div>
+    <div class="detail-content"><div class="detail-photo" role="img" aria-label="Study space preview"></div>
     <h2>${spot.building} — ${spot.room}</h2><p class="detail-location">${spot.building} · ${spot.setting}</p>
     <div class="big-rating"><span>${ratingStars(spot.rating)}</span><strong>${spot.rating}/5</strong></div>
     <div class="amenity-grid">${amenities.map(([icon, label, value]) => `<div><span aria-hidden="true">${icon}</span><small>${label}</small><strong class="${value.toLowerCase() === 'yes' ? 'yes' : ''}">${value}</strong></div>`).join('')}</div>
