@@ -152,7 +152,7 @@ function closeDetail() {
   state.selected = null;
   byId('detail-panel').classList.remove('is-open');
   document.querySelector('.map-stage').classList.remove('has-detail');
-  byId('detail-panel').innerHTML = '<button class="close-detail" id="close-detail" type="button" aria-label="Close spot details">×</button><div class="detail-empty"><div class="empty-icon">↗</div><p class="eyebrow">Spot details</p><h2>Pick a pin<br /><em>to peek inside.</em></h2><p>Choose a spot from the list or map to see its amenities and notes.</p></div>';
+  byId('detail-panel').innerHTML = '<div class="detail-empty"><div class="empty-icon">↗</div><p class="eyebrow">Spot details</p><h2>Pick a pin<br /><em>to peek inside.</em></h2><p>Choose a spot from the list or map to see its amenities and notes.</p></div>';
   byId('close-detail').addEventListener('click', closeDetail); renderList(); renderMarkers();
 }
 function updateView() { renderList(); renderMarkers(); }
