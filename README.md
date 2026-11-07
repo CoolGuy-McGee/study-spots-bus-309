@@ -26,3 +26,7 @@ Use **Save Spot** to keep a favorite spot handy.
 ## About the listings
 
 Study spots are student-submitted and may change over time. Ratings and descriptions are intended to help you compare options, but availability can vary during the day.
+
+The site loads its listings from `Data/derived-spots.json`. The committed JSON and all 51 referenced files in `Data/images` are the complete runtime dataset; the original photo collection, Parquet export, archives, and conversion tools are not needed to serve the site.
+
+Coordinates come from the user-provided location table, matched by room, building, finder, rating, indoor/outdoor setting, and solo/group space. Fifty of the 51 image-backed records have supplied coordinates. Smith room 333 has `null` latitude and longitude and is flagged with `coordinate_accuracy: "missing coordinates"`; it is excluded from the map until coordinates are supplied. The supplied south-side Ricks Gardens and MC Near Bowling Area locations have no matching image-backed records yet.
