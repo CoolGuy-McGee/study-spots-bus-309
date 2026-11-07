@@ -23,3 +23,4 @@ html, body { min-height: 100%; overflow-x: hidden; }.leaflet-bottom.leaflet-left
 .detail-location:before{content:none!important;margin-right:0!important}
 .detail-content{padding-top:20px}
 @media(max-width:800px){.map-stage.has-detail .leaflet-control-attribution,.map-stage.has-filters .leaflet-control-attribution{display:none}}
+.close-detail{width:32px;height:32px;display:grid;place-items:center;padding:0;border:1px solid rgba(174,176,179,.75);border-radius:50%;background:rgba(255,255,255,.92);box-shadow:0 2px 6px rgba(48,50,54,.18);color:#4b4d50;font-size:22px;line-height:1}.close-detail:hover{background:#fff;box-shadow:0 2px 8px rgba(48,50,54,.24)}
