@@ -11,6 +11,11 @@ const byId = (id) => document.getElementById(id);
 const clean = (value) => (value || '').trim();
 const ratingStars = (rating) => `${'★'.repeat(rating)}${'☆'.repeat(5 - rating)}`;
 const tone = (value) => value.toLowerCase().replace(/\s/g, '');
+const normalizeSpot = (spot) => ({
+  ...spot,
+  noise: spot.noise.charAt(0).toUpperCase() + spot.noise.slice(1).toLowerCase(),
+  accessible: spot.accessible === true || String(spot.accessible).trim().toLowerCase() === 'yes'
+});
 document.querySelector('#map .leaflet-bottom.leaflet-left')?.appendChild(byId('campus-button'));
 const filteredSpots = () => state.spots.filter((spot) => {
   const searchable = `${spot.room} ${spot.building} ${spot.scenery} ${spot.notes}`.toLowerCase();
@@ -156,9 +161,9 @@ function closeDetail() {
 function updateView() { renderList(); renderMarkers(); }
 
 async function init() {
-  const response = await fetch('./data.json');
-  if (!response.ok) throw new Error('Could not load data.json');
-  state.spots = await response.json();
+  const response = await fetch('./Data/derived-spots.json');
+  if (!response.ok) throw new Error('Could not load study spot data');
+  state.spots = (await response.json()).map(normalizeSpot).filter((spot) => Number.isFinite(spot.lat) && Number.isFinite(spot.lng));
   renderFilterControls();
   byId('status-copy').textContent = `${state.spots.length} student-submitted spots`;
   updateView();
