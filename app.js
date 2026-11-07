@@ -2,7 +2,7 @@ const campusCenter = [43.8145, -111.7785];
 const campusBounds = [43.801, -111.792, 43.827, -111.765];
 const state = { spots: [], filtered: [], search: '', selected: null, filters: { buildings: [], setting: '', noise: [], crowd: [], privacy: [], availability: [], space: '', food: [], desk: false, power: false, wifi: false, accessible: false } };
 
-const map = L.map('map', { zoomControl: false, attributionControl: true }).setView(campusCenter, 15);
+const map = L.map('map', { zoomControl: false, attributionControl: true }).setView(campusCenter, 15.6);
 L.control.zoom({ position: 'bottomleft' }).addTo(map);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; OpenStreetMap contributors' }).addTo(map);
 const markerLayer = L.layerGroup().addTo(map);
@@ -125,6 +125,19 @@ function renderDetail(spot) {
   byId('close-detail').addEventListener('click', closeDetail);
 }
 
+function centerMapOn(target, zoom) {
+  let adjustedTarget = target;
+  const detailPanel = byId('detail-panel');
+  if (!window.matchMedia('(max-width: 800px)').matches && detailPanel.classList.contains('is-open')) {
+    const mapRect = byId('map').getBoundingClientRect();
+    const detailRect = detailPanel.getBoundingClientRect();
+    const cardAndInset = detailRect.width + Math.max(0, mapRect.right - detailRect.right);
+    const projected = map.project(target, zoom);
+    adjustedTarget = map.unproject(L.point(projected.x + cardAndInset / 2, projected.y), zoom);
+  }
+  map.flyTo(adjustedTarget, zoom, { duration: 0.6 });
+}
+
 function selectSpot(id) {
   const spot = state.spots.find((item) => item.id === id);
   if (!spot) return;
@@ -132,13 +145,7 @@ function selectSpot(id) {
   byId('detail-panel').classList.add('is-open');
   document.querySelector('.map-stage').classList.add('has-detail');
   if (!window.matchMedia('(max-width: 800px)').matches) {
-    const mapRect = byId('map').getBoundingClientRect();
-    const detailRect = byId('detail-panel').getBoundingClientRect();
-    const cardAndInset = detailRect.width + Math.max(0, mapRect.right - detailRect.right);
-    const zoom = 17;
-    const projected = map.project([spot.lat, spot.lng], zoom);
-    const adjustedCenter = map.unproject(L.point(projected.x + cardAndInset / 2, projected.y), zoom);
-    map.flyTo(adjustedCenter, zoom, { duration: 0.6 });
+    centerMapOn([spot.lat, spot.lng], 17);
   }
 }
 function closeDetail() {
@@ -160,7 +167,8 @@ async function init() {
 }
 
 byId('search-input').addEventListener('input', (event) => { state.search = event.target.value.toLowerCase().trim(); updateView(); });
-byId('campus-button').addEventListener('click', () => map.flyTo(campusCenter, 15, { duration: 0.6 }));
+L.DomEvent.disableClickPropagation(byId('campus-button'));
+byId('campus-button').addEventListener('click', () => centerMapOn(campusCenter, 15.6));
 byId('filters-button').addEventListener('click', () => setFilterPanel(true));
 byId('filter-close').addEventListener('click', () => setFilterPanel(false));
 byId('filter-backdrop').addEventListener('click', () => setFilterPanel(false));
