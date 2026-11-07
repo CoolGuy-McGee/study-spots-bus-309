@@ -1,6 +1,6 @@
 const campusCenter = [43.8145, -111.7785];
 const campusBounds = [43.801, -111.792, 43.827, -111.765];
-const state = { spots: [], filtered: [], search: '', selected: null, filters: { buildings: [], setting: '', noise: [], crowd: [], privacy: [], availability: [], space: '', rating: 0, food: [], desk: false, power: false, wifi: false, accessible: false } };
+const state = { spots: [], filtered: [], search: '', selected: null, filters: { buildings: [], setting: '', noise: [], crowd: [], privacy: [], availability: [], space: '', food: [], desk: false, power: false, wifi: false, accessible: false } };
 
 const map = L.map('map', { zoomControl: false, attributionControl: true }).setView(campusCenter, 15);
 L.control.zoom({ position: 'bottomleft' }).addTo(map);
@@ -9,7 +9,6 @@ const markerLayer = L.layerGroup().addTo(map);
 
 const byId = (id) => document.getElementById(id);
 const clean = (value) => (value || '').trim();
-const ratingStars = (rating) => `${'★'.repeat(rating)}${'☆'.repeat(5 - rating)}`;
 const tone = (value) => value.toLowerCase().replace(/\s/g, '');
 const normalizeSpot = (spot) => ({
   ...spot,
@@ -28,7 +27,6 @@ const filteredSpots = () => state.spots.filter((spot) => {
     && (!filters.privacy.length || filters.privacy.includes(spot.privacy))
     && (!filters.availability.length || filters.availability.includes(spot.availability))
     && (!filters.space || spot.space === filters.space)
-    && (!filters.rating || spot.rating >= filters.rating)
     && (!filters.food.length || filters.food.includes(spot.food))
     && (!filters.desk || spot.desk === 'Yes')
     && (!filters.power || spot.power === 'Yes')
@@ -52,7 +50,6 @@ const filterGroups = [
   { key: 'privacy', label: 'Privacy', type: 'multi', options: () => ['Low', 'Med', 'High'], display: { Med: 'Medium' } },
   { key: 'availability', label: 'Availability', type: 'multi', options: () => ['Low', 'Med', 'High'], display: { Med: 'Medium' } },
   { key: 'space', label: 'Study type', type: 'single', options: () => ['Solo', 'Group'] },
-  { key: 'rating', label: 'Minimum rating', type: 'rating', options: () => [1, 2, 3, 4, 5] },
   { key: 'food', label: 'Food nearby', type: 'multi', options: () => ['Low', 'Med', 'High'], display: { Med: 'Medium' } }
 ];
 
@@ -63,15 +60,14 @@ function renderFilterControls() {
     const text = group.display?.[option] || option;
     const checked = group.type === 'multi' ? state.filters[group.key].includes(option) : state.filters[group.key] === option;
     const inputType = group.type === 'multi' ? 'checkbox' : 'radio';
-    const value = group.type === 'rating' ? `${option}` : option;
-    return `<label class="filter-option ${checked ? 'is-selected' : ''}"><input type="${inputType}" name="${group.key}" value="${value}" ${checked ? 'checked' : ''}><span>${group.type === 'rating' ? `${option} ${option === 5 ? '★' : '+ ★'}` : text}</span></label>`;
+    return `<label class="filter-option ${checked ? 'is-selected' : ''}"><input type="${inputType}" name="${group.key}" value="${option}" ${checked ? 'checked' : ''}><span>${text}</span></label>`;
   }).join('')}</div></section>`).join('') + `<section class="filter-group"><h3>Amenities</h3><div class="filter-options amenity-options">${[['wifi', 'Wi-Fi'], ['power', 'Power outlets'], ['desk', 'Desk'], ['accessible', 'Accessible']].map(([key, label]) => `<label class="filter-option ${state.filters[key] ? 'is-selected' : ''}"><input type="checkbox" name="${key}" ${state.filters[key] ? 'checked' : ''}><span>${label}</span></label>`).join('')}</div></section>`;
   controls.querySelectorAll('input').forEach((input) => input.addEventListener('click', (event) => {
     const group = filterGroups.find((item) => item.key === input.name);
-    const selectedValue = group?.type === 'rating' ? Number(input.value) : input.value;
-    if ((group?.type === 'single' && state.filters[input.name] === selectedValue) || (group?.type === 'rating' && state.filters.rating === selectedValue)) {
+    const selectedValue = input.value;
+    if (group?.type === 'single' && state.filters[input.name] === selectedValue) {
       event.preventDefault();
-      state.filters[input.name] = group.type === 'rating' ? 0 : '';
+      state.filters[input.name] = '';
       renderFilterControls();
       updateView();
     }
@@ -79,7 +75,6 @@ function renderFilterControls() {
   controls.querySelectorAll('input').forEach((input) => input.addEventListener('change', () => {
     const group = filterGroups.find((item) => item.key === input.name);
     if (group?.type === 'multi') state.filters[input.name] = [...controls.querySelectorAll(`input[name="${input.name}"]:checked`)].map((item) => item.value);
-    else if (group?.type === 'rating') state.filters.rating = Number(input.value);
     else if (group) state.filters[input.name] = input.value;
     else state.filters[input.name] = input.checked;
     renderFilterControls();
@@ -106,7 +101,7 @@ function setFilterPanel(open) {
 }
 
 function clearFilters() {
-  state.filters = { buildings: [], setting: '', noise: [], crowd: [], privacy: [], availability: [], space: '', rating: 0, food: [], desk: false, power: false, wifi: false, accessible: false };
+  state.filters = { buildings: [], setting: '', noise: [], crowd: [], privacy: [], availability: [], space: '', food: [], desk: false, power: false, wifi: false, accessible: false };
   renderFilterControls();
   updateView();
 }
@@ -125,14 +120,9 @@ function renderDetail(spot) {
   byId('detail-panel').innerHTML = `<button class="close-detail" id="close-detail" type="button" aria-label="Close spot details">×</button>
     <div class="detail-content"><div class="detail-photo"><img src="${spot.image || ''}" alt="Study space at ${spot.building} — ${spot.room}" /></div>
     <h2>${spot.building} — ${spot.room}</h2><p class="detail-location">${spot.building} · ${spot.setting}</p>
-    <div class="big-rating"><span>${ratingStars(spot.rating)}</span><strong>${spot.rating}/5</strong></div>
     <div class="amenity-grid">${amenities.map(([icon, label, value]) => `<div><span aria-hidden="true">${icon}</span><small>${label}</small><strong class="${value.toLowerCase() === 'yes' ? 'yes' : ''}">${value}</strong></div>`).join('')}</div>
-    <div class="scenery"><div><h3>Scenery &amp; Mood</h3><p>${spot.scenery}${spot.notes ? `, ${spot.notes}` : '.'}</p></div></div><button class="save-button" type="button">♡ <span>Save Spot</span></button></div>`;
+    <div class="scenery"><div><h3>Scenery &amp; Mood</h3><p>${spot.scenery}${spot.notes ? `, ${spot.notes}` : '.'}</p></div></div></div>`;
   byId('close-detail').addEventListener('click', closeDetail);
-  byId('detail-panel').querySelector('.save-button').addEventListener('click', (event) => {
-    const saved = event.currentTarget.classList.toggle('saved');
-    event.currentTarget.innerHTML = saved ? '♥ <span>Saved Spot</span>' : '♡ <span>Save Spot</span>';
-  });
 }
 
 function selectSpot(id) {
@@ -155,7 +145,7 @@ function closeDetail() {
   state.selected = null;
   byId('detail-panel').classList.remove('is-open');
   document.querySelector('.map-stage').classList.remove('has-detail');
-  byId('detail-panel').innerHTML = '<button class="close-detail" id="close-detail" type="button" aria-label="Close spot details">×</button><div class="detail-empty"><div class="empty-icon">↗</div><p class="eyebrow">Spot details</p><h2>Pick a pin<br /><em>to peek inside.</em></h2><p>Choose a spot from the list or map to see its ratings, amenities, and notes.</p></div>';
+  byId('detail-panel').innerHTML = '<button class="close-detail" id="close-detail" type="button" aria-label="Close spot details">×</button><div class="detail-empty"><div class="empty-icon">↗</div><p class="eyebrow">Spot details</p><h2>Pick a pin<br /><em>to peek inside.</em></h2><p>Choose a spot from the list or map to see its amenities and notes.</p></div>';
   byId('close-detail').addEventListener('click', closeDetail); renderList(); renderMarkers();
 }
 function updateView() { renderList(); renderMarkers(); }
