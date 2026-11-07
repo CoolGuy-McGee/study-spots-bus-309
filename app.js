@@ -109,7 +109,7 @@ function clearFilters() {
 function renderMarkers() {
   markerLayer.clearLayers();
   state.filtered.forEach((spot) => {
-    const marker = L.marker([spot.lat, spot.lng], { icon: L.divIcon({ className: 'custom-marker', html: `<span class="marker-pin ${spot.setting.toLowerCase()}"><b>${spot.rating}</b></span>`, iconSize: [42, 48], iconAnchor: [21, 44] }) });
+    const marker = L.marker([spot.lat, spot.lng], { icon: L.divIcon({ className: 'custom-marker', html: '<img class="marker-pin" src="./img/pin_logo.png" alt="" aria-hidden="true">', iconSize: [36, 44], iconAnchor: [18, 44] }) });
     marker.on('click', () => selectSpot(spot.id));
     marker.addTo(markerLayer);
   });
