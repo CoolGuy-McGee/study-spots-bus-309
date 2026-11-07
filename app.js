@@ -1,4 +1,4 @@
-const campusCenter = [43.8145, -111.7785];
+const campusCenter = [43.8185, -111.7833];
 const campusBounds = [43.801, -111.792, 43.827, -111.765];
 const state = { spots: [], filtered: [], search: '', selected: null, filters: { buildings: [], setting: '', noise: [], crowd: [], privacy: [], availability: [], space: '', food: [], desk: false, power: false, wifi: false, accessible: false } };
 
@@ -128,7 +128,7 @@ function renderDetail(spot) {
 function centerMapOn(target, zoom) {
   let adjustedTarget = target;
   const detailPanel = byId('detail-panel');
-  if (!window.matchMedia('(max-width: 800px)').matches && detailPanel.classList.contains('is-open')) {
+  if (!window.matchMedia('(max-width: 800px)').matches) {
     const mapRect = byId('map').getBoundingClientRect();
     const detailRect = detailPanel.getBoundingClientRect();
     const cardAndInset = detailRect.width + Math.max(0, mapRect.right - detailRect.right);
@@ -164,6 +164,7 @@ async function init() {
   renderFilterControls();
   byId('status-copy').textContent = `${state.spots.length} student-submitted spots`;
   updateView();
+  centerMapOn(campusCenter, 15.6);
 }
 
 byId('search-input').addEventListener('input', (event) => { state.search = event.target.value.toLowerCase().trim(); updateView(); });
